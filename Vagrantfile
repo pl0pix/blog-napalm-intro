@@ -18,6 +18,9 @@ Vagrant.configure("2") do |config|
   # boxes will only be checked for updates when the user runs
   # `vagrant box outdated`. This is not recommended.
   # config.vm.box_check_update = false
+  if Vagrant.has_plugin?("vagrant-vbguest")
+    config.vbguest.auto_update = false
+  end
 
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine. In the example below,
@@ -84,8 +87,8 @@ Vagrant.configure("2") do |config|
     host1.vm.provision "shell", inline: <<-EOF
       # apt-get update
       # apt-get install -y lldpd libssl-dev libffi-dev python-dev python-cffi pyhon-pip
-      sudo apt install -y python3-pip
-      # su -c "pip install napalm" vagrant
+      sudo apt install -y lldpd python3-pip
+      su -c "pip3 install napalm" vagrant
     EOF
   end
   config.vm.define "switch1" do |switch1|
@@ -94,7 +97,7 @@ Vagrant.configure("2") do |config|
     # switch1.vm.network "forwarded_port", guest: 22, host: 11022
     # switch1.vm.network "forwarded_port", guest: 443, host: 11443
     switch1.vm.network "private_network",
-                       ip: "192.168.56.102",
+                       ip: "169.254.1.11",
                        virtualbox__intnet: 'linkname1',
                        auto_config: false
     switch1.vm.network "private_network",
@@ -108,11 +111,11 @@ Vagrant.configure("2") do |config|
     #  v.customize ["modifyvm", :id, "--name", "switch1"]
     # end
     switch1.vm.provision "shell", inline: <<-SHELL
-	  sleep 30
 	  FastCli -p 15 -c "configure
 	 hostname switch1
-	  interface Ethernet1
-	    ip address 192.168.56.102/24" 
+	 interface Ethernet1
+	  no switchport
+	  ip address 192.168.56.102/24"
 	SHELL
-    end
+  end
 end
