@@ -85,14 +85,18 @@ Vagrant.configure("2") do |config|
       v.customize ["modifyvm", :id, "--name", "host1"]
     end
     host1.vm.provision "shell", inline: <<-EOF
-      # apt-get update
-      # apt-get install -y lldpd libssl-dev libffi-dev python-dev python-cffi pyhon-pip
-      sudo apt install -y lldpd python3-pip
-      su -c "pip3 install napalm" vagrant
+      apt-get update
+      # python-2 installation
+      apt-get install -y lldpd libssl-dev libffi-dev python-dev python-cffi python-pip
+      su -c "pip install napalm" vagrant
+      # python3 installation
+      # sudo apt install -y lldpd python3-pip
+      su -c "pip install napalm" vagrant
     EOF
   end
   config.vm.define "switch1" do |switch1|
-    switch1.vm.box = "vEOS-lab-4.20.3F"
+    # switch1.vm.box = "vEOS-lab-4.20.3F"
+    switch1.vm.box = "veos-lab-4.21.1"
     # switch1.vm.hostname = "switch1"
     # switch1.vm.network "forwarded_port", guest: 22, host: 11022
     # switch1.vm.network "forwarded_port", guest: 443, host: 11443
