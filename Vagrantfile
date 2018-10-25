@@ -91,7 +91,7 @@ Vagrant.configure("2") do |config|
 	  # su -c "pip install napalm" vagrant
 	  # python3 installation
 	  sudo apt install -y lldpd python3-pip
-	  su -c "pip install napalm" vagrant
+	  su -c "pip3 install napalm" vagrant
 	EOF
   end
   config.vm.define "switch1" do |switch1|
