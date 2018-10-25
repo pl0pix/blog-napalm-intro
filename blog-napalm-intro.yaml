@@ -1,0 +1,50 @@
+diagram:
+  fill: "#FFFFFF"
+  columns: 5
+  rows: 5
+  gridLines: false
+title:
+  color: black
+  heightPercentage: 6
+  logoFill: lightgrey
+  stroke: lightgrey
+  subText: "Napalm introduction"
+  text: "Napalm Vagrant Lab"
+  type: "bar"
+  author: "Erik Wenzel"
+defaults: &defaults
+  color: "white"
+  fill: "#555555"
+  iconFamily: "azureEnterprise"
+  iconFill: "white"
+  iconStroke: "none"
+  stroke: "none"
+cisco: &cisco
+  color: "#004BAF"
+  fill: "white"
+  iconFamily: "cisco"
+  iconFill: "#004BAF"
+  iconStrokeWidth: .25
+  stroke: "#004BAF"
+  preserveWhite: true
+
+icons:
+  switch1: {<<: *cisco, x: 4, y: 3, icon: "workgroupswitch"}
+  host1: {<<: *cisco, x: 0, y: 4, icon: "file_server"}
+  labhost: {<<: *cisco, x: 2, y: 2, icon: "file_server"}
+
+connection: &connection
+  color: "black"
+  stroke: "black"
+  strokeDashArray: "10,2"
+connections:
+  - { <<: *connection, endpoints: ["switch1:ethernet1", "host1:eth1"] }
+  - { <<: *connection, curve: curveStep, endpoints: ["switch1:ethernet2", "host1:eth2"] }
+  - { <<: *connection, endpoints: ["labhost:linkname0", "switch1:Management1"] }
+  - { <<: *connection, endpoints: ["labhost:10.0.2.2/24", "host1:eth0;10.0.2.15/24"] }
+
+group: &group
+  - { color: "white", stroke: "lightgrey", fill: "rgba(0, 0, 0, 0.3)" }
+groups:
+  - { <<: *group, name: "Vagrant Lab", textLocation: "leftMiddle", members: ["switch1", "host1"] }
+
