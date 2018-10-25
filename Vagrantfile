@@ -87,10 +87,10 @@ Vagrant.configure("2") do |config|
     host1.vm.provision "shell", inline: <<-EOF
       apt-get update
       # python-2 installation
-      apt-get install -y lldpd libssl-dev libffi-dev python-dev python-cffi python-pip
-      su -c "pip install napalm" vagrant
+      # apt-get install -y lldpd libssl-dev libffi-dev python-dev python-cffi python-pip
+      # su -c "pip install napalm" vagrant
       # python3 installation
-      # sudo apt install -y lldpd python3-pip
+	  sudo apt install -y lldpd python3-pip
       su -c "pip install napalm" vagrant
     EOF
   end

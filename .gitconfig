@@ -1,0 +1,35 @@
+
+[user]
+	name = Erik Wenzel
+	email = ew@code.de
+[diff]
+	color = auto
+[ui]
+	editor = vim
+	pager = less -F
+[merge]
+	tool = splice
+
+[mergetool "splice"]
+	cmd = "mvim -f $BASE $LOCAL $REMOTE $MERGED -c 'SpliceInit'"
+	trustExitCode = true
+
+[alias]
+	l = log
+	s = status
+	co = checkout
+	b = branch
+	d = diff
+	a = add
+	c = commit
+	m = merge
+	r = remote
+	glog = log --graph
+	unstage = reset HEAD --
+
+[push]
+	default = simple
+[color]
+	ui = auto
+[gitreview]
+	username = plopix
