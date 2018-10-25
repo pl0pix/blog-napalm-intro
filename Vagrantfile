@@ -19,7 +19,7 @@ Vagrant.configure("2") do |config|
   # `vagrant box outdated`. This is not recommended.
   # config.vm.box_check_update = false
   if Vagrant.has_plugin?("vagrant-vbguest")
-    config.vbguest.auto_update = false
+	config.vbguest.auto_update = false
   end
 
   # Create a forwarded port mapping which allows access to a specific port
@@ -71,50 +71,50 @@ Vagrant.configure("2") do |config|
   #   apt-get install -y apache2
   # SHELL
   config.vm.define "host1" do |host1|
-    host1.vm.box = "debian/stretch64"
-    host1.vm.hostname = "napalm"
-    # host1.vm.network "forwarded_port", guest: 22, host: 11021
-    host1.vm.network "private_network", ip: "192.168.56.101",
-                       virtualbox__intnet: 'linkname1',
-                       auto_config: true
-    host1.vm.network "private_network", ip: "192.168.57.101",
-                       virtualbox__intnet: 'linkname2',
-                       auto_config: true
-    host1.vm.provider :virtualbox do |v|
-      v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
-      v.customize ["modifyvm", :id, "--name", "host1"]
-    end
-    host1.vm.provision "shell", inline: <<-EOF
-      apt-get update
-      # python-2 installation
-      # apt-get install -y lldpd libssl-dev libffi-dev python-dev python-cffi python-pip
-      # su -c "pip install napalm" vagrant
-      # python3 installation
+	host1.vm.box = "debian/stretch64"
+	host1.vm.hostname = "napalm"
+	# host1.vm.network "forwarded_port", guest: 22, host: 11021
+	host1.vm.network "private_network", ip: "192.168.56.101",
+					   virtualbox__intnet: 'linkname1',
+					   auto_config: true
+	host1.vm.network "private_network", ip: "192.168.57.101",
+					   virtualbox__intnet: 'linkname2',
+					   auto_config: true
+	host1.vm.provider :virtualbox do |v|
+	  v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+	  v.customize ["modifyvm", :id, "--name", "host1"]
+	end
+	host1.vm.provision "shell", inline: <<-EOF
+	  apt-get update
+	  # python-2 installation
+	  # apt-get install -y lldpd libssl-dev libffi-dev python-dev python-cffi python-pip
+	  # su -c "pip install napalm" vagrant
+	  # python3 installation
 	  sudo apt install -y lldpd python3-pip
-      su -c "pip install napalm" vagrant
-    EOF
+	  su -c "pip install napalm" vagrant
+	EOF
   end
   config.vm.define "switch1" do |switch1|
-    # switch1.vm.box = "vEOS-lab-4.20.3F"
-    switch1.vm.box = "veos-lab-4.21.1"
-    # switch1.vm.hostname = "switch1"
-    # switch1.vm.network "forwarded_port", guest: 22, host: 11022
-    # switch1.vm.network "forwarded_port", guest: 443, host: 11443
-    switch1.vm.network "private_network",
-                       ip: "169.254.1.11",
-                       virtualbox__intnet: 'linkname1',
-                       auto_config: false
-    switch1.vm.network "private_network",
-                       ip: "169.254.1.11",
-                       virtualbox__intnet: 'linkname2',
-                       auto_config: false
-    # switch1.vm.provider "virtualbox" do |v|
-    #   v.gui = true
-    #   v.memory = '2048'
-    #  v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
-    #  v.customize ["modifyvm", :id, "--name", "switch1"]
-    # end
-    switch1.vm.provision "shell", inline: <<-SHELL
+	# switch1.vm.box = "vEOS-lab-4.20.3F"
+	switch1.vm.box = "veos-lab-4.21.1"
+	# switch1.vm.hostname = "switch1"
+	# switch1.vm.network "forwarded_port", guest: 22, host: 11022
+	# switch1.vm.network "forwarded_port", guest: 443, host: 11443
+	switch1.vm.network "private_network",
+					   ip: "169.254.1.11",
+					   virtualbox__intnet: 'linkname1',
+					   auto_config: false
+	switch1.vm.network "private_network",
+					   ip: "169.254.1.11",
+					   virtualbox__intnet: 'linkname2',
+					   auto_config: false
+	# switch1.vm.provider "virtualbox" do |v|
+	#	v.gui = true
+	#	v.memory = '2048'
+	#  v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+	#  v.customize ["modifyvm", :id, "--name", "switch1"]
+	# end
+	switch1.vm.provision "shell", inline: <<-SHELL
 	  FastCli -p 15 -c "configure
 	 hostname switch1
 	 interface Ethernet1
