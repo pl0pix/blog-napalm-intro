@@ -13,38 +13,31 @@ title:
   type: "bar"
   author: "Erik Wenzel"
 defaults: &defaults
-  color: "white"
-  fill: "#555555"
-  iconFamily: "azureEnterprise"
-  iconFill: "white"
-  iconStroke: "none"
-  stroke: "none"
-cisco: &cisco
-  color: "#004BAF"
+  color: "gray"
   fill: "white"
-  iconFamily: "cisco"
+  iconFamily: "azureEnterprise"
   iconFill: "#004BAF"
-  iconStrokeWidth: .25
+  iconStroke: "#004BAF"
   stroke: "#004BAF"
-  preserveWhite: true
 
 icons:
-  switch1: {<<: *cisco, x: 4, y: 3, icon: "workgroupswitch"}
-  host1: {<<: *cisco, x: 0, y: 4, icon: "file_server"}
-  labhost: {<<: *cisco, x: 2, y: 2, icon: "file_server"}
+  switch1: {<<: *defaults, x: 4, y: 3, icon: "virtualmachine"}
+  host1: {<<: *defaults, x: 0, y: 4, icon: "virtualmachine"}
+  labhost: {<<: *defaults, stroke: "orange", x: 2, y: 2, icon: "laptopcomputer"}
 
 connection: &connection
   color: "black"
   stroke: "black"
   strokeDashArray: "10,2"
 connections:
-  - { <<: *connection, endpoints: ["switch1:ethernet1", "host1:eth1"] }
-  - { <<: *connection, curve: curveStep, endpoints: ["switch1:ethernet2", "host1:eth2"] }
-  - { <<: *connection, endpoints: ["labhost:linkname0", "switch1:Management1"] }
-  - { <<: *connection, endpoints: ["labhost:10.0.2.2/24", "host1:eth0;10.0.2.15/24"] }
+  - { <<: *connection, endpoints: ["switch1:ethernet1;192.168.56.102/24", "host1:eth1;192.168.56.101/24"] }
+  - { <<: *connection, curve: curveStep, endpoints: ["switch1:ethernet2;192.168.57.102/24", "host1:eth2;192.168.57.101/24"] }
+  - { <<: *connection, endpoints: ["labhost:Adapter1(NAT)", "switch1:Management1;10.0.2.15/24"] }
+  - { <<: *connection, endpoints: ["labhost:Adapter1(NAT)", "host1:eth0;10.0.2.15/24"] }
 
 group: &group
-  - { color: "white", stroke: "lightgrey", fill: "rgba(0, 0, 0, 0.3)" }
+  - { color: "black", stroke: "darkgray", fill: "#969e7b" }
 groups:
-  - { <<: *group, name: "Vagrant Lab", textLocation: "leftMiddle", members: ["switch1", "host1"] }
+  - { <<: *group, name: "Vagrant Lab", textLocation: "topMiddle", members: ["switch1", "host1"] }
+
 
